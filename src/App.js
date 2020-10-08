@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import MediaTitle from "./components/MediaTitle/MediaTitle";
+import MediaContainer from "./components/MediaContainer/MediaContainer";
+import axios from "axios";
 
-// npm install axios — this installs axios into the current project
-
-//import axios into this JS file
-// import axios from "axios";
-
-//check if install works
-// console.log(axios);
+// https://api.nasa.gov/planetary/apod?api_key=GFyb6XCulUkOI5oTyFwmlf7lbZUyCHNVxwytU02y&date=2020-10-07
 
 function App() {
-  return (
-    // <Header />
-    // <PictureGallery />
+  const [data, setData] = useState();
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.nasa.gov/planetary/apod?api_key=GFyb6XCulUkOI5oTyFwmlf7lbZUyCHNVxwytU02y&date=2020-10-07"
+      )
+      .then((res) => {
+        setData(res.data);
+        // console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(error);
+      });
+  }, [data]);
 
+  return (
     <div className="App">
-      <p>
-        Read through the instructions in the README.md file to build your NASA
-        app! Have fun{" "}
-        <span role="img" aria-label="go!">
-          🚀
-        </span>
-        !
-      </p>
+      <MediaTitle />
+      <MediaContainer />
     </div>
   );
 }
