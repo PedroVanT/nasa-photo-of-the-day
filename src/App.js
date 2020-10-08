@@ -4,28 +4,34 @@ import MediaTitle from "./components/MediaTitle/MediaTitle";
 import MediaContainer from "./components/MediaContainer/MediaContainer";
 import axios from "axios";
 
-// https://api.nasa.gov/planetary/apod?api_key=GFyb6XCulUkOI5oTyFwmlf7lbZUyCHNVxwytU02y&date=2020-10-07
+// ! If API is ran too many times and is unavailable, open incognito and use a different email
 
 function App() {
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
+  const [currentDate] = useState("2020-10-07");
+
   useEffect(() => {
-    axios
-      .get(
-        "https://api.nasa.gov/planetary/apod?api_key=GFyb6XCulUkOI5oTyFwmlf7lbZUyCHNVxwytU02y&date=2020-10-07"
-      )
-      .then((res) => {
-        setData(res.data);
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(error);
-      });
-  }, [data]);
+    const fetchData = () => {
+      axios
+        .get(
+          `https://api.nasa.gov/planetary/apod?api_key=vpdlUQErGlMQSJWrED5jbfAXarIhue0vDzrIadwk&date=${currentDate}`
+        )
+        .then((res) => {
+          setData(res.data);
+          console.log(res.data.date);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, [currentDate]);
 
   return (
     <div className="App">
-      <MediaTitle />
-      <MediaContainer />
+      <MediaTitle dataObj={data} />
+      <MediaContainer dataObj={data} />
     </div>
   );
 }
